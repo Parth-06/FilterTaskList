@@ -238,7 +238,7 @@ const Todo = () => {
             <div className="inside_main">
                 <figure>
 
-                    <figcaption>FilterTask</figcaption>
+                    <figcaption>ADD IN THE LIST</figcaption>
                     
                 </figure>
 

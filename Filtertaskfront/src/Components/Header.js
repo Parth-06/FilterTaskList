@@ -31,7 +31,7 @@ const Header = () => {
    
       <div className='head'>
   
-        TASK LIST APP
+        FilterTask App
         <HeaderMain/>
  
     </div>
