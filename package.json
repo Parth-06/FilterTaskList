@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1 --ignore client",
+    "start": "node app.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix Filtertaskfront && npm run build --prefix Filtertaskfront"
+  },
+  "author": "Parth Thakkar",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^1.35.3",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "git": "^0.1.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.5",
+    "nodemon": "^2.0.16",
+    "react-toastify": "^9.0.4",
+    "remove-node-modules": "^1.7.6"
+  }
+}
