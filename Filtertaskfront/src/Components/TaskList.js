@@ -15,7 +15,7 @@ const TaskList = () => {
   const checked = false;
 
   useEffect(() => {
-    const callmainpage = async () => {
+    const Callmainpage = async () => {
       try {
         const res = await fetch("/tasklist", {
           method: "GET",
@@ -25,18 +25,19 @@ const TaskList = () => {
           },
           credentials: "include",
         });
-        dispatch({ type: "USER", payload: true });
+        const user = await res.json();
+
         if (!res.status === 200) {
           const error = new Error(res.error);
           throw error;
         }
       } catch (err) {
+        console.log(err);
         toast.error("Please Login For Better Experience");
         navigate("/login");
-        dispatch({ type: "USER", payload: false });
       }
     };
-    callmainpage();
+    Callmainpage();
   }, []);
 
   useEffect(() => {
