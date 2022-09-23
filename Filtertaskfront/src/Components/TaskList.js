@@ -15,6 +15,31 @@ const TaskList = () => {
   const checked = false;
 
   useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const res = await fetch("/userdata", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        const newdata = await res.json();
+
+        setDbdata(newdata);
+        setfetchdata("done");
+        if (!res.status === 200) {
+          const error = new Error(res.error);
+          throw error;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchdata();
+  }, [fetchdata]);
+
+  useEffect(() => {
     const callmainpage = async () => {
       try {
         const res = await fetch("/home", {
@@ -64,7 +89,6 @@ const TaskList = () => {
           toast.error("Invaid");
         } else {
           setfetchdata("edit");
-          console.log("edited");
         }
       });
       setToggle(true);
@@ -171,31 +195,6 @@ const TaskList = () => {
       }
     });
   };
-
-  useEffect(() => {
-    const fetchdata = async () => {
-      try {
-        const res = await fetch("/userdata", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
-        const newdata = await res.json();
-
-        setDbdata(newdata);
-        setfetchdata("done");
-        if (!res.status === 200) {
-          const error = new Error(res.error);
-          throw error;
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchdata();
-  }, [fetchdata]);
 
   return (
     <div className="Main">
