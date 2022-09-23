@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { UserContext } from "../App";
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
   const loginuser = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("/logins", {
+    const res = await fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +25,9 @@ const Login = () => {
     });
 
     const data = await res.json();
+    console.log(data.token);
     if (res.status === 400 || !data) {
+      console.log("invalid");
       toast.error("Invaid Login Details");
     } else {
       toast.success("Login successfully");
@@ -55,7 +57,6 @@ const Login = () => {
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            autoComplete="off"
           />
         </div>
         <div className="regi_in">
@@ -66,7 +67,7 @@ const Login = () => {
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            autoComplete="off"
+            autocomplete="off"
           />
         </div>
 

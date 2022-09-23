@@ -7,10 +7,9 @@ const Userlist = require("../Model/listShema");
 const jwt = require("jsonwebtoken");
 const authenticate = require("../Middleware/Authenticate");
 const cookieParser = require("cookie-parser");
-const { toast } = require("react-toastify");
 router.use(cookieParser());
 
-router.post("/todo", authenticate, async (req, res) => {
+router.post("/home", authenticate, async (req, res) => {
   const { allUserInput } = req.body;
 
   try {
@@ -28,6 +27,8 @@ router.post("/todo", authenticate, async (req, res) => {
         console.log(err);
       }
     } else {
+      console.log(userOne.email);
+      console.log(allUserInput);
       console.log("saved");
     }
     return res.json(req.rootUser);
@@ -45,7 +46,7 @@ router.get("/userdata", authenticate, async (req, res) => {
   }
 });
 
-router.get("/todo", authenticate, async (req, res) => {
+router.get("/home", authenticate, async (req, res) => {
   return res.json(req.rootUser);
 });
 
@@ -74,6 +75,7 @@ router.post("/deleteone", authenticate, async (req, res) => {
   const listtwo = await Userlist.findOne({ id: index });
 
   if (listtwo) {
+    console.log(listtwo);
     try {
       const userNew = await Userlist.findByIdAndUpdate(
         { _id: listOne.id },
@@ -121,8 +123,6 @@ router.post("/check", authenticate, async (req, res) => {
         console.log(err);
       }
     }
-  } else {
-    console.log("error");
   }
 });
 
@@ -174,7 +174,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/logins", async (req, res) => {
+router.post("/login", async (req, res) => {
   router.use(cookieParser());
   try {
     const { email, password } = req.body;
@@ -211,7 +211,7 @@ router.post("/logins", async (req, res) => {
   }
 });
 
-router.get("/logins", async (req, res) => {
+router.get("/login", async (req, res) => {
   return res.json(token);
 });
 

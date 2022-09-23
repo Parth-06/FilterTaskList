@@ -4,17 +4,40 @@ import { UserContext } from "../App";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-const Todo = () => {
+const TaskList = () => {
   const [userInput, setUserInput] = useState("");
-  const [fetchdata, setfetchdata] = useState("");
   const [toggle, setToggle] = useState(true);
   const [isEditItem, setIsEditItem] = useState(null);
   const [dbdata, setDbdata] = useState([]);
+  const [fetchdata, setfetchdata] = useState("");
   const { dispatch } = useContext(UserContext);
-
   const navigate = useNavigate();
-
   const checked = false;
+
+  useEffect(() => {
+    const callmainpage = async () => {
+      try {
+        const res = await fetch("/home", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          credentials: "include",
+        });
+        dispatch({ type: "USER", payload: true });
+        if (!res.status === 200) {
+          const error = new Error(res.error);
+          throw error;
+        }
+      } catch (err) {
+        toast.success("Please Login For Better Experience");
+        navigate("/login");
+        dispatch({ type: "USER", payload: false });
+      }
+    };
+    callmainpage();
+  }, []);
 
   const addItem = async () => {
     if (!userInput) {
@@ -25,6 +48,7 @@ const Todo = () => {
           toast.info("Item Edited");
           return { ...item, name: userInput };
         }
+
         const res = await fetch("/edit", {
           method: "POST",
           headers: {
@@ -40,6 +64,7 @@ const Todo = () => {
           toast.error("Invaid");
         } else {
           setfetchdata("edit");
+          console.log("edited");
         }
       });
       setToggle(true);
@@ -54,7 +79,7 @@ const Todo = () => {
 
       setUserInput("");
 
-      const res = await fetch("/todo", {
+      const res = await fetch("/home", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,8 +94,8 @@ const Todo = () => {
       if (res.status === 422 || !data) {
         console.log("invalid");
       } else {
+        setfetchdata("added");
         toast.success("Added to the List");
-        setfetchdata("Added");
       }
     }
   };
@@ -87,11 +112,11 @@ const Todo = () => {
             index,
           }),
         });
-        const dataa = await res.json();
-        if (res.status === 400 || !dataa) {
-          toast.error("Invaid");
+        const data = await res.json();
+        if (res.status === 422 || !data) {
+          console.log("invalid");
         } else {
-          setfetchdata("deleted");
+          setfetchdata("deletedone");
         }
       }
     });
@@ -99,6 +124,7 @@ const Todo = () => {
   };
 
   const editItem = (id) => {
+    console.log(id);
     let editedItem = dbdata.find((item) => {
       return item.id === id;
     });
@@ -115,11 +141,11 @@ const Todo = () => {
         "Content-Type": "application/json",
       },
     });
-    const dataa = await res.json();
-    if (res.status === 400 || !dataa) {
-      toast.error("Invaid");
+    const data = await res.json();
+    if (res.status === 422 || !data) {
+      console.log("invalid");
     } else {
-      setfetchdata("removedall");
+      setfetchdata("deletedall");
     }
   };
 
@@ -136,41 +162,15 @@ const Todo = () => {
             check,
           }),
         });
-        const dataa = await res.json();
-        if (res.status === 400 || !dataa) {
-          toast.error("Invaid");
+        const data = await res.json();
+        if (res.status === 422 || !data) {
+          console.log("invalid");
         } else {
           setfetchdata("checked");
         }
       }
     });
   };
-
-  useEffect(() => {
-    const callmainpage = async () => {
-      try {
-        const res = await fetch("/todo", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          credentials: "include",
-        });
-        dispatch({ type: "USER", payload: true });
-        const data = await res.json();
-        if (!res.status === 200) {
-          const error = new Error(res.error);
-          throw error;
-        }
-      } catch (err) {
-        toast.success("Please Login For Better Experience");
-        navigate("/login");
-        dispatch({ type: "USER", payload: false });
-      }
-    };
-    callmainpage();
-  });
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -182,9 +182,9 @@ const Todo = () => {
             Accept: "application/json",
           },
         });
-        const fdata = await res.json();
+        const newdata = await res.json();
 
-        setDbdata(fdata);
+        setDbdata(newdata);
         setfetchdata("done");
         if (!res.status === 200) {
           const error = new Error(res.error);
@@ -215,17 +215,11 @@ const Todo = () => {
               setUserInput(e.target.value);
             }}
             name="name"
-            autoComplete="off"
           />
           {toggle ? (
             <i className="fas fa-plus" title="Add Items" onClick={addItem}></i>
           ) : (
-            <i
-              className="fas fa-edit"
-              title="Edit Items"
-              onClick={addItem}
-              autoComplete="off"
-            ></i>
+            <i className="fas fa-edit" title="Edit Items" onClick={addItem}></i>
           )}
         </div>
 
@@ -235,6 +229,7 @@ const Todo = () => {
               <div className="para">
                 <p name="itemname">{item.name}</p>
               </div>
+
               <div>
                 <i
                   className="far fa-trash-alt"
@@ -295,4 +290,4 @@ const Todo = () => {
   );
 };
 
-export default Todo;
+export default TaskList;

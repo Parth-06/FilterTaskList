@@ -1,6 +1,6 @@
 import './App.css';
 import React, { createContext, useReducer } from 'react';
-import Todo from './Components/Todo';
+import Todo from './Components/TaskList';
 import Header from './Components/Header';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Register from './Components/Register';
