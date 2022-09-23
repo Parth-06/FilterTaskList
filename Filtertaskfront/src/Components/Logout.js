@@ -4,7 +4,7 @@ import { UserContext } from "../App";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 const Logout = () => {
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
   const navigate = useNavigate();
   useEffect(() => {
     const callmainpagee = async () => {

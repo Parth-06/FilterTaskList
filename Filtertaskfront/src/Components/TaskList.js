@@ -42,7 +42,7 @@ const TaskList = () => {
   useEffect(() => {
     const callmainpage = async () => {
       try {
-        const res = await fetch("/home", {
+        const res = await fetch("/tasklist", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const TaskList = () => {
 
       setUserInput("");
 
-      const res = await fetch("/home", {
+      const res = await fetch("/tasklist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

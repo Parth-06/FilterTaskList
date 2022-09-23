@@ -9,7 +9,7 @@ const authenticate = require("../Middleware/Authenticate");
 const cookieParser = require("cookie-parser");
 router.use(cookieParser());
 
-router.post("/home", authenticate, async (req, res) => {
+router.post("/tasklist", authenticate, async (req, res) => {
   const { allUserInput } = req.body;
 
   try {
@@ -46,7 +46,7 @@ router.get("/userdata", authenticate, async (req, res) => {
   }
 });
 
-router.get("/home", authenticate, async (req, res) => {
+router.get("/tasklist", authenticate, async (req, res) => {
   return res.json(req.rootUser);
 });
 
