@@ -15,6 +15,31 @@ const TaskList = () => {
   const checked = false;
 
   useEffect(() => {
+    const callmainpage = async () => {
+      try {
+        const res = await fetch("/tasklist", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          credentials: "include",
+        });
+        dispatch({ type: "USER", payload: true });
+        if (!res.status === 200) {
+          const error = new Error(res.error);
+          throw error;
+        }
+      } catch (err) {
+        toast.error("Please Login For Better Experience");
+        navigate("/login");
+        dispatch({ type: "USER", payload: false });
+      }
+    };
+    callmainpage();
+  }, []);
+
+  useEffect(() => {
     const fetchdata = async () => {
       try {
         const res = await fetch("/userdata", {
@@ -38,31 +63,6 @@ const TaskList = () => {
     };
     fetchdata();
   }, [fetchdata]);
-
-  useEffect(() => {
-    const callmainpage = async () => {
-      try {
-        const res = await fetch("/tasklist", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          credentials: "include",
-        });
-        dispatch({ type: "USER", payload: true });
-        if (!res.status === 200) {
-          const error = new Error(res.error);
-          throw error;
-        }
-      } catch (err) {
-        toast.success("Please Login For Better Experience");
-        navigate("/login");
-        dispatch({ type: "USER", payload: false });
-      }
-    };
-    callmainpage();
-  }, []);
 
   const addItem = async () => {
     if (!userInput) {
